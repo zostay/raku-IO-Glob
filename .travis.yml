@@ -1,6 +1,7 @@
 language: perl6
 install:
   - rakudobrew build-panda
+  - cd perl6-IO-Glob
   - panda installdeps .
 script:
   - prove -v -e "perl6 --ll-exception -Ilib" t
