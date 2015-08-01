@@ -7,7 +7,7 @@ class Globber {
     class Match does Term { has $.smart-match is rw }
     class Expansion does Term { has @.alternatives }
 
-    has @.terms;# where { .elems > 0 && all($_) ~~ Term };
+    has @.terms where { .elems > 0 && all($_) ~~ Term };
     has @!matchers;
 
     method !compile-terms-ind($base, @terms is copy) {
