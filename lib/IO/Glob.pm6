@@ -2,6 +2,43 @@ unit class IO::Glob;
 
 use v6;
 
+=NAME IO::Glob - Glob matching for paths & strings and listing files
+
+=begin SYNOPSIS
+
+    use IO::Glob;
+
+    # Use a glob to match a string or path
+    if "some-string" ~~ glob("some-*") { say "match string!" }
+    if "some/path.txt".IO ~~ glob("some/*.txt") { say "match path!" }
+
+    # Use a glob as a test in built-in IO::Path.dir()
+    for "/var/log".IO.dir(test => glob("*.err")) -> $err-log { ... }
+
+    # Or better, do it directly from here
+    for glob("*.err").dir("/var/log") -> $err-log { ... }
+
+    # Globs are objects, which you can save, reuse, and pass around
+    my $file-match = glob("*.txt);
+    my @files := dir("$*HOME/docs", :test($file-match));
+
+=end SYNOPSIS
+
+=begin DESCRIPTION
+
+Traditionally, globs provide a handy shorthand for identifying the files you're
+interested in based upon their path. This class provides that shorthand using a
+BSD-style glob grammar that is familiar to Perl devs. However, it is more
+powerful than it's predecessor in Perl 5's File::Glob.
+
+=item # Globs are built as IO::Glob objects which encapsulate the pattern and let you pass them around for whatever use you want to put them too.
+
+=item # By using L<#method dir>, you can put globs to their traditional use, listing all the files in a directory.
+
+=item # It also works well as a smart-match. It will match against strings or anything that stringifies and against L<IO::Path>s too. This allows it to be used with the built-in L<IO::Path#method dir> too.
+
+=end DESCRIPTION
+
 class Globber {
     role Term { }
     class Match does Term { has $.smart-match is rw }
@@ -123,8 +160,62 @@ grammar BSD is Simple {
     token escape-sym:sym<~> { <sym> }
 }
 
-has Str $.pattern;
-has IO::Spec $.spec = $*SPEC;
+=begin pod
+
+=head1 SUBROUTINES
+
+=head2 sub glob
+
+    sub glob(Str:D $pattern, :$grammar = IO::Glob::BSD.new, :$spec = $*SPEC) returns IO::Glob:D
+    sub glob(Whatever $, :$grammar = IO::Glob::BSD.new, :$spec = $*SPEC) returns IO::Glob:D
+
+When given a string, that string will be stored in the L<#method
+pattern/pattern> attribute and will be parsed according to the L<#method
+grammar/grammar>.
+
+When given L<Whatever> (C<*>) as the argument, it's the same as:
+
+    glob('*');
+
+which will match anything.
+
+The optional C<:$grammar> setting lets you select a globbing grammar to use. Two
+are provided:
+
+=item IO::Glob::Simple (which supports just C<*> and C<?>)
+
+=item IO::Glob::BSD (supports C<*>, C<?>, C<[abc]>, C<[!abc]>, C<~>, and C<{ab,cd,efg}>)
+
+If you want a grammar that does something else, you may create your own as well,
+but no documentation of that process has been written yet as of this writing.
+
+Finally, the C<:$spec> option allows you to specify the L<IO::Spec> to use when
+matching paths. It uses C<$*SPEC>, by default.
+
+=head1 METHODS
+
+=head2 method pattern
+
+    method pattern() returns Str:D
+
+Returns the pattern set during construction.
+
+=head2 method spec
+
+    method spec() returns IO::Spec:D
+
+Returns the spec set during construction.
+
+=head2 method grammar
+
+    method grammar() returns Any:D
+
+Returns the grammar set during construction.
+
+=end pod
+
+has Str:D $.pattern;
+has IO::Spec:D $.spec = $*SPEC;
 
 has $.grammar = BSD.new;
 has Globber $!globber;
@@ -144,6 +235,19 @@ method !compile-globs() {
         );
     });
 }
+
+=begin pod
+
+=head2 method dir
+
+    method dir(Cool $path = '.') returns List:D
+
+Returns a list of files matching the glob. This will descend directories if the
+pattern contains a L<IO::Spec#dir-sep> using a depth-first search. (This ought
+to respect the order of alternates in expansions like C<{bc,ab}>, but that is
+not supported yet at this time.)
+
+=end pod
 
 method dir(Cool $path = '.') returns List:D {
     self!compile-globs;
@@ -174,15 +278,47 @@ method dir(Cool $path = '.') returns List:D {
     @result;
 }
 
-multi method ACCEPTS(Str:U $) returns Bool:D { False }
+=begin pod
+
+=head2 method ACCEPTS
+
+    method ACCEPTS(Mu:U $) returns Bool:D
+    method ACCEPTS(Str:D(Any) $candiate) returns Bool:D
+    method ACCEPTS(IO::Path:D $path) returns Bool:D
+
+This implements smart-match. Undefined values never match. Strings a matched
+using the whole pattern, without reference to any directory separators in the
+string. Paths, however, are matched and carefully respect directory separators.
+For most circumstances, this will not make any difference. However, a case like
+this will be treated very differently in each case:
+
+    my $glob = glob("hello{x,y/}world");
+    say "String" if "helloy/world";     # outputs> String
+    say "Path"   if "helloy/world".IO;  # outputs nothing, no match
+    say "Path 2" if "helloy{x,y/}world" # outputs> Path 2
+
+The reason is that the second and third are matched in parts as follows:
+
+    "helloy" ~~ glob("hello{x,y") && "world" ~~ glob("}world")
+    "hello{x,y" ~~ glob("hello{x,y") && "}world" ~~ glob("}world")
+
+=end pod
+
+multi method ACCEPTS(Mu:U $) returns Bool:D { False }
 multi method ACCEPTS(Str:D(Any) $candidate) returns Bool:D {
     self!compile-glob;
     $candidate ~~ $.globber
 }
-
-multi sub glob(Str:D $pattern) returns IO::Glob:D is export {
-    IO::Glob.new(:$pattern);
+multi method ACCEPTS(IO::Path:D $path) returns Bool:D {
+    self!compile-globs;
+    my @parts = $path.split($.spec.dir-sep);
+    return False unless @parts.elems == @!globbers.elems;
+    [&&] (@parts Z @!globbers).flatmap: -> $p, $g { $p ~~ $g };
 }
-multi sub glob(Whatever $) returns IO::Glob:D is export {
-    IO::Glob.new(:pattern('*'));
+
+multi sub glob(Str:D $pattern, :$grammar = BSD.new, :$spec = $*SPEC) returns IO::Glob:D is export {
+    IO::Glob.new(:$pattern, :$grammar, :$spec);
+}
+multi sub glob(Whatever $, :$grammar = BSD.new, :$spec = $*SPEC) returns IO::Glob:D is export {
+    IO::Glob.new(:pattern('*'), :$grammar, :$spec);
 }
