@@ -124,12 +124,59 @@ grammar BSD is Simple {
 }
 
 has Str $.pattern;
+has IO::Spec $.spec = $*SPEC;
 
 has $.grammar = BSD.new;
-has Globber $.globber = Globber.new(:terms($!grammar.parse($!pattern)<term>.map({.made})));
+has Globber $!globber;
+has Globber @!globbers;
+
+method !compile-glob() {
+    $!globber = Globber.new(
+        terms => $!grammar.parse($!pattern)<term>.map({.made}),
+    );
+}
+
+method !compile-globs() {
+    my @parts = $.pattern.split($.spec.dir-sep);
+    @!globbers = @parts.map({
+        Globber.new(
+            terms => $!grammar.parse($^pattern)<term>.map({.made}),
+        );
+    });
+}
+
+method dir(Cool $path = '.') returns List:D {
+    self!compile-globs;
+
+    my $current = $path.IO;
+    return []<> unless $current.d;
+
+    my @globbers = @!globbers;
+
+    # Depth-first-search... commence!
+    my @open-list = \(:path($current), :@globbers);
+    my @result;
+    while @open-list {
+        my (:$path, :@globbers) := @open-list.shift;
+
+        if @globbers {
+            my ($globber, @remaining) = @globbers;
+            @open-list.unshift: $path.dir(test => $globber)\
+                .map({
+                    \(:$^path, :globbers(@remaining))
+                });
+        }
+        else {
+            @result.push: $path;
+        }
+    }
+
+    @result;
+}
 
 multi method ACCEPTS(Str:U $) returns Bool:D { False }
 multi method ACCEPTS(Str:D(Any) $candidate) returns Bool:D {
+    self!compile-glob;
     $candidate ~~ $.globber
 }
 
