@@ -307,7 +307,7 @@ The reason is that the second and third are matched in parts as follows:
 multi method ACCEPTS(Mu:U $) returns Bool:D { False }
 multi method ACCEPTS(Str:D(Any) $candidate) returns Bool:D {
     self!compile-glob;
-    $candidate ~~ $.globber
+    $candidate ~~ $!globber
 }
 multi method ACCEPTS(IO::Path:D $path) returns Bool:D {
     self!compile-globs;

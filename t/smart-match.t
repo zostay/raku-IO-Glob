@@ -31,9 +31,9 @@ ok '..' ~~ $star;
 ok 'bsadhfwerowhefl;kasjdf' ~~ $star;
 ok '' ~~ $star;
 
-my $fixtures-foo = blog('t/fixtures/foo.*');
-ok 't/fixture/foo.md'.IO ~~ $fixtures-foo;
-ok 't/fixture/foo.txt'.IO ~~ $fixtures-foo;
-ok 't/fixture/bar.md'.IO !~~ $fixtures-foo;
+my $fixtures-foo = glob('t/fixtures/foo.*');
+ok 't/fixtures/foo.md'.IO ~~ $fixtures-foo;
+ok 't/fixtures/foo.txt'.IO ~~ $fixtures-foo;
+ok 't/fixtures/bar.md'.IO !~~ $fixtures-foo;
 
 done;
