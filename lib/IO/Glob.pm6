@@ -190,7 +190,7 @@ When given L<Whatever> (C<*>) as the argument, it's the same as:
 
     glob('*');
 
-which will match anything.
+which will match anything. (Note that what whatever matches may be grammar specific, so C<glob(*, :grammar(IO::Glob::SQL))> is the same as C<glob('%')>.)
 
 The optional C<:$grammar> setting lets you select a globbing grammar to use. Two
 are provided:
@@ -301,16 +301,16 @@ method dir(Cool $path = '.') returns List:D {
     method ACCEPTS(Str:D(Any) $candiate) returns Bool:D
     method ACCEPTS(IO::Path:D $path) returns Bool:D
 
-This implements smart-match. Undefined values never match. Strings a matched
+This implements smart-match. Undefined values never match. Strings are matched
 using the whole pattern, without reference to any directory separators in the
 string. Paths, however, are matched and carefully respect directory separators.
 For most circumstances, this will not make any difference. However, a case like
 this will be treated very differently in each case:
 
     my $glob = glob("hello{x,y/}world");
-    say "String" if "helloy/world";     # outputs> String
-    say "Path"   if "helloy/world".IO;  # outputs nothing, no match
-    say "Path 2" if "helloy{x,y/}world" # outputs> Path 2
+    say "String" if "helloy/world" ~~ $glob;      # outputs> String
+    say "Path"   if "helloy/world".IO ~~ $glob;   # outputs nothing, no match
+    say "Path 2" if "helloy{x,y/}world" ~~ $glob; # outputs> Path 2
 
 The reason is that the second and third are matched in parts as follows:
 
