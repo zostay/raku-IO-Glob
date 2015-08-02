@@ -27,11 +27,11 @@ DESCRIPTION
 
 Traditionally, globs provide a handy shorthand for identifying the files you're interested in based upon their path. This class provides that shorthand using a BSD-style glob grammar that is familiar to Perl devs. However, it is more powerful than it's predecessor in Perl 5's File::Glob.
 
-  * # Globs are built as IO::Glob objects which encapsulate the pattern and let you pass them around for whatever use you want to put them too.
+  * Globs are built as IO::Glob objects which encapsulate the pattern and let you pass them around for whatever use you want to put them too.
 
-  * # By using [#method dir](#method dir), you can put globs to their traditional use, listing all the files in a directory.
+  * By using [#method dir](#method dir), you can put globs to their traditional use, listing all the files in a directory.
 
-  * # It also works well as a smart-match. It will match against strings or anything that stringifies and against [IO::Path](IO::Path)s too. This allows it to be used with the built-in [IO::Path#method dir](IO::Path#method dir) too.
+  * It also works well as a smart-match. It will match against strings or anything that stringifies and against [IO::Path](IO::Path)s too. This allows it to be used with the built-in [IO::Path#method dir](IO::Path#method dir) too.
 
 SUBROUTINES
 ===========
