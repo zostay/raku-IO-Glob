@@ -37,6 +37,8 @@ powerful than it's predecessor in Perl 5's File::Glob.
 
 =item # It also works well as a smart-match. It will match against strings or anything that stringifies and against L<IO::Path>s too. This allows it to be used with the built-in L<IO::Path#method dir> too.
 
+=item # You can use custom grammars for your smart match. This is still somewhat experimental, but if you need a different glob style that is provided, you can roll your own with a small amount of effort or extend on of the existing ones. This class ships with three grammars: Simple, BSD, and SQL.
+
 =end DESCRIPTION
 
 class Globber {
@@ -82,7 +84,7 @@ class Globber {
 # kind of feature. Instead, we give them the option to pick a grammar. They are
 # free to subclass a grammar as simple or complicated as they like and we give
 # them the obvious grammars to begin with.
-grammar Simple {
+grammar Base {
     token TOP {
         <term>+
         { make $<term>».made }
@@ -100,6 +102,21 @@ grammar Simple {
     }
 
     proto token match {*}
+    proto token expansion { * }
+    proto token escape { * }
+    token char { $<char> = . { make $<char>.Str } }
+}
+
+grammar SQL is Base {
+    method whatever-match { '%' }
+
+    token match:sym<%> { <sym> { make rx/.*?/ } }
+    token match:sym<_> { <sym> { make rx/./ } }
+}
+
+grammar Simple is Base {
+    method whatever-match { '*' }
+
     token match:sym<*> {
         <!after "\\"> <sym>
         { make rx/.*?/ }
@@ -109,15 +126,11 @@ grammar Simple {
         { make rx/./ }
     }
 
-    proto token expansion { * }
-
     token escape { "\\" <escape-sym> { make $<escape-sym>.Str } }
 
     proto token escape-sym { * }
     token escape-sym:sym<*> { <sym> }
     token escape-sym:sym<?> { <sym> }
-
-    token char { $<char> = . { make $<char>.Str } }
 }
 
 grammar BSD is Simple {
@@ -185,6 +198,8 @@ are provided:
 =item IO::Glob::Simple (which supports just C<*> and C<?>)
 
 =item IO::Glob::BSD (supports C<*>, C<?>, C<[abc]>, C<[!abc]>, C<~>, and C<{ab,cd,efg}>)
+
+=item IO::Glob::SQL (supports C<%> and C<_>)
 
 If you want a grammar that does something else, you may create your own as well,
 but no documentation of that process has been written yet as of this writing.
@@ -320,5 +335,5 @@ multi sub glob(Str:D $pattern, :$grammar = BSD.new, :$spec = $*SPEC) returns IO:
     IO::Glob.new(:$pattern, :$grammar, :$spec);
 }
 multi sub glob(Whatever $, :$grammar = BSD.new, :$spec = $*SPEC) returns IO::Glob:D is export {
-    IO::Glob.new(:pattern('*'), :$grammar, :$spec);
+    IO::Glob.new(:pattern($grammar.whatever-match), :$grammar, :$spec);
 }

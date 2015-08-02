@@ -35,6 +35,8 @@ Traditionally, globs provide a handy shorthand for identifying the files you're 
 
   * It also works well as a smart-match. It will match against strings or anything that stringifies and against [IO::Path](IO::Path)s too. This allows it to be used with the built-in [IO::Path#method dir](IO::Path#method dir) too.
 
+  * You can use custom grammars for your smart match. This is still somewhat experimental, but if you need a different glob style that is provided, you can roll your own with a small amount of effort or extend on of the existing ones. This class ships with three grammars: Simple, BSD, and SQL.
+
 SUBROUTINES
 ===========
 
@@ -57,6 +59,8 @@ The optional `:$grammar` setting lets you select a globbing grammar to use. Two 
   * IO::Glob::Simple (which supports just `*` and `?`)
 
   * IO::Glob::BSD (supports `*`, `?`, `[abc]`, `[!abc]`, `~`, and `{ab,cd,efg}`)
+
+  * IO::Glob::SQL (supports `%` and `_`)
 
 If you want a grammar that does something else, you may create your own as well, but no documentation of that process has been written yet as of this writing.
 
