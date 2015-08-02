@@ -3,6 +3,8 @@ NAME
 
 IO::Glob - Glob matching for paths & strings and listing files
 
+[![Build Status](https://travis-ci.org/zostay/perl6-IO-Glob.svg)](https://travis-ci.org/zostay/perl6-IO-Glob)
+
 SYNOPSIS
 ========
 
