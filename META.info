@@ -10,7 +10,7 @@
         "IO::Glob::Globber::Match": "lib/IO/Glob.pm6",
         "IO::Glob::Globber::Expansion": "lib/IO/Glob.pm6",
         "IO::Glob::Simple": "lib/IO/Glob.pm6",
-        "IO::Glob::BSD": "lib/IO/Glob.pm6",
+        "IO::Glob::BSD": "lib/IO/Glob.pm6"
     },
     "depends" : [],
     "source-url" : "git://github.com/zostay/perl6-IO-Glob.git"
