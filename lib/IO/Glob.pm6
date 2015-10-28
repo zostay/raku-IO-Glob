@@ -255,7 +255,7 @@ method !compile-globs() {
 
 =head2 method dir
 
-    method dir(Cool $path = '.') returns List:D
+    method dir(Cool $path = '.') returns Seq:D
 
 Returns a list of files matching the glob. This will descend directories if the
 pattern contains a L<IO::Spec#dir-sep> using a depth-first search. (This ought
