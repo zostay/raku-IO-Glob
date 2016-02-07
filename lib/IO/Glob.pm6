@@ -1,4 +1,4 @@
-unit class IO::Glob;
+unit class IO::Glob does Iterable;
 
 use v6;
 
@@ -289,6 +289,8 @@ method dir(Cool $path = '.') returns Seq:D {
         }
     }
 }
+
+method iterator(IO::Glob:D:) { self.dir.iterator }
 
 =begin pod
 
