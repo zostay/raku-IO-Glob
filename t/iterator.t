@@ -6,7 +6,7 @@ use Test;
 use IO::Glob;
 
 {
-    my @files = glob('t/fixtures/*.md');
+    my @files = glob('t/fixtures/*.md').sort;
     is @files.elems, 2;
     is @files[0], 't/fixtures/bar.md'.IO;
     is @files[1], 't/fixtures/foo.md'.IO;
