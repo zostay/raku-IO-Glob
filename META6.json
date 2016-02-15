@@ -4,7 +4,10 @@
     "auth" : "github:zostay",
     "version" : "v0.1",
     "description" : "Glob matching for paths & strings and listing files",
-    "authors" : [ "Andrew Sterling Hanenkamp <hanenkamp@cpan.org>" ],
+    "authors" : [
+        "Andrew Sterling Hanenkamp <hanenkamp@cpan.org>",
+        "Peter Pentchev <roam@ringlet.net>"
+    ],
     "license" : "Artistic 2.0",
     "provides" : {
         "IO::Glob": "lib/IO/Glob.pm6",
