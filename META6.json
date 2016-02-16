@@ -21,7 +21,7 @@
         "IO::Glob::SQL": "lib/IO/Glob.pm6"
     },
     "depends" : [],
-    "source-url" : "git://github.com/zostay/perl6-IO-Glob.git"
+    "source-url" : "git://github.com/zostay/perl6-IO-Glob.git",
     "support" : {
         "bugtracker" : "https://github.com/zostay/perl6-IO-Glob/issues",
         "source" : "git://github.com/zostay/perl6-IO-Glob.git"
