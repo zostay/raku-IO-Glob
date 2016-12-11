@@ -1,4 +1,4 @@
-unit class IO::Glob:auth<github:zostay>:ver<0.1> does Iterable;
+unit class IO::Glob:auth<github:zostay>:ver<0.3> does Iterable;
 
 use v6;
 
