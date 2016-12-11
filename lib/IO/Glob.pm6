@@ -1,4 +1,4 @@
-unit class IO::Glob:auth<github:zostay>:ver<0.3> does Iterable;
+unit class IO::Glob:auth<github:zostay>:ver<0.1> does Iterable;
 
 use v6;
 
@@ -9,7 +9,7 @@ use v6;
     use IO::Glob;
 
     # Need a list of files somewhere?
-    for glob("src/core/*.pm") -> $file { say $file }
+    for glob("src/core/*.pm") -> $file { say ~$file }
 
     # Or apply the glob to a chosen directory
     with glob("*.log") {
