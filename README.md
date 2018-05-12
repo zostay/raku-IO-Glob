@@ -1,7 +1,7 @@
 NAME
 ====
 
-IO::Glob - Glob matching for paths & strings and listing files
+IO::Glob - Glob matching for paths & strings and listing of files
 
 SYNOPSIS
 ========
@@ -25,7 +25,7 @@ SYNOPSIS
     for "/var/log".IO.dir(test => glob("*.err")) -> $err-log { ... }
 
     # Globs are objects, which you can save, reuse, and pass around
-    my $file-match = glob("*.txt);
+    my $file-match = glob("*.txt");
     my @files := dir("$*HOME/docs", :test($file-match));
 
     # Want to use SQL globbing with % and _ instead?
