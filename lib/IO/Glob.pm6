@@ -2,7 +2,7 @@ unit class IO::Glob:auth<github:zostay>:ver<0.4> does Iterable;
 
 use v6;
 
-=NAME IO::Glob - Glob matching for paths & strings and listing files
+=NAME IO::Glob - Glob matching for paths, strings and file listings.
 
 =begin SYNOPSIS
 
@@ -39,16 +39,16 @@ use v6;
 
 =begin DESCRIPTION
 
-Traditionally, globs provide a handy shorthand for identifying the files you're
+Traditionally, globs provide a handy shorthand for describing the files you're
 interested in based upon their path. This class provides that shorthand using a
 BSD-style glob grammar that is familiar to Perl devs. However, it is more
 powerful than its Perl 5 predecessor.
 
-=item Globs are built as IO::Glob objects which encapsulate the pattern. You may create them and pass them around.
+=item Globs are built as C<IO::Glob> objects which encapsulate the pattern. You may create them and pass them around.
 
 =item By using them as an iterator, you can put globs to their traditional use: listing all the files in a directory.
 
-=item Globs also work as smart-matches. It will match against strings or anything that stringifies and against L<IO::Path>s too.
+=item Globs can also be smart-matched. It will match against strings or anything that stringifies; it will work against L<IO::Path>s too.
 
 =item Globbing can be done with different grammars. This class ships with three: simple, BSD, and SQL.
 
