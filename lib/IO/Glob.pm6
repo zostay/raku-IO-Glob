@@ -389,7 +389,7 @@ method dir(Str() $path = '.') returns Seq:D {
             my @paths = do if $globber.is-ordered {
                 $globber.accepts-with-sort($path.dir);
             }
-            else {
+            elsif $path ~~ :d && $path.basename ne '..' {
                 $path.dir(test => $globber);
             }
 
