@@ -379,9 +379,9 @@ method dir(Str() $path = '.') returns Seq:D {
     my @globbers = @!globbers;
 
     # Depth-first-search... commence!
-    my @open-list = \(:path($current), :@globbers);
+    my @open-list = \(:path($current), :@globbers, :origin);
     gather while @open-list {
-        my (:$path, :@globbers) := @open-list.shift;
+        my (:$path, :@globbers, :$origin) := @open-list.shift;
 
         if @globbers {
             my ($globber, @remaining) = @globbers;
@@ -389,7 +389,7 @@ method dir(Str() $path = '.') returns Seq:D {
             my @paths = do if $globber.is-ordered {
                 $globber.accepts-with-sort($path.dir);
             }
-            elsif $path ~~ :d && $path.basename ne '..' {
+            elsif $path ~~ :d && ($origin || $path.basename ne '..' | '.') {
                 $path.dir(test => $globber);
             }
 
