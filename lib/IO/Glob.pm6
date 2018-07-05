@@ -386,10 +386,13 @@ method dir(Str() $path = '.') returns Seq:D {
         if @globbers {
             my ($globber, @remaining) = @globbers;
 
+            next unless $path ~~ :d;
+            next unless $origin || $path.basename ne '..' | '.';
+
             my @paths = do if $globber.is-ordered {
                 $globber.accepts-with-sort($path.dir);
             }
-            elsif $path ~~ :d && ($origin || $path.basename ne '..' | '.') {
+            else {
                 $path.dir(test => $globber);
             }
 
