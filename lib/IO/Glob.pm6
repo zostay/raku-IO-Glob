@@ -1,6 +1,5 @@
-unit class IO::Glob:auth<github:zostay>:ver<0.5> does Iterable;
-
 use v6;
+unit class IO::Glob:auth<github:zostay>:ver<0.5> does Iterable;
 
 =NAME IO::Glob - Glob matching for paths & strings and listing files
 
