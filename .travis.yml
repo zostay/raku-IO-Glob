@@ -6,7 +6,6 @@ perl6:
   - '2018.04'
 matrix:
   allow_failures:
-    - perl6: latest
     - perl6: '2018.06'
     - perl6: '2018.04'
 install:
