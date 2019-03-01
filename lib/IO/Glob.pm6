@@ -439,7 +439,7 @@ multi method ACCEPTS(IO::Path:D $path) returns Bool:D {
     self!compile-globs;
     my @parts = (~$path).split($.spec.dir-sep);
     return False unless @parts.elems == @!globbers.elems;
-    [&&] (@parts Z @!globbers).flatmap: -> ($p, $g) { $p ~~ $g };
+    [&&] (@parts Z @!globbers).map: -> ($p, $g) { $p ~~ $g };
 }
 
 proto glob(|) is export { * }
