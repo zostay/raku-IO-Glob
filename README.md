@@ -74,7 +74,7 @@ sub glob
         :$spec = $*SPEC
     ) returns IO::Glob:D
 
-When given a string, that string will be stored in the [#method pattern/pattern](#method pattern/pattern) attribute and will be parsed according to the [#method grammar/grammar](#method grammar/grammar).
+When given a string, that string will be stored in the [method pattern/pattern](#method pattern/pattern) attribute and will be parsed according to the [method grammar/grammar](#method grammar/grammar).
 
 When given [Whatever](Whatever) (`*`) as the argument, it's the same as:
 
