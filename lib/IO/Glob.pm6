@@ -338,9 +338,10 @@ method !compile-glob() {
 }
 
 method !compile-globs() {
+    my ($volume) = $.spec.splitpath($.pattern, :nofile);
     my @parts = $.pattern.split($.spec.dir-sep);
 
-    $!absolute = (@parts[0] eq '');
+    $!absolute = (@parts[0] eq $volume);
     shift @parts if $!absolute;
 
     @!globbers = @parts.map({
@@ -445,17 +446,18 @@ multi method ACCEPTS(Str:D(Any) $candidate) returns Bool:D {
 }
 multi method ACCEPTS(IO::Path:D $path) returns Bool:D {
     self!compile-globs;
+    my ($volume) = $.spec.splitpath($path, :nofile);
     my @parts = (~$path).split($.spec.dir-sep);
 
     if $!absolute {
-        if @parts[0] eq '' {
+        if @parts[0] eq $volume {
             shift @parts[0];
         }
         else {
             return False;
         }
     }
-    elsif @parts[0] eq '' {
+    elsif @parts[0] eq $volume {
         shift @parts[0];
     }
 
