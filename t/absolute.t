@@ -3,26 +3,29 @@ use v6;
 use Test;
 use IO::Glob;
 
-my @root = dir('/').sort».Str;
+my $volume = '.'.IO.volume;
+my $root-dir = '.'.IO.volume ~ $*SPEC.dir-sep;
+
+my @root = dir($root-dir).sort».Str;
 
 subtest 'root-in-the-glob-with-relative-dir-dies' => {
     throws-like {
-        glob("/*").dir
+        glob("$root-dir*").dir
     }, X::AdHoc, message => /'relative search origin'/;
 }
 
 subtest 'root-in-the-glob' => {
-    my @files = glob("/*").dir("/")».Str.grep(none('/.', '/..')).sort;
+    my @files = glob("$root-dir*").dir($root-dir)».Str.grep(none("$root-dir.", "$root-dir..")).sort;
     is-deeply @files, @root;
 }
 
 subtest 'root-in-the-dir' => {
-    my @files = glob("*").dir("/").».Str.grep(none('/.', '/..')).sort;
+    my @files = glob("*").dir($root-dir).».Str.grep(none("$root-dir.", "$root-dir..")).sort;
     is-deeply @files, @root;
 }
 
 subtest 'root-via-accept' => {
-    my @files = @root.grep(glob("/*"));
+    my @files = @root.grep(glob("$root-dir*"));
     is-deeply @files, @root;
 }
 
