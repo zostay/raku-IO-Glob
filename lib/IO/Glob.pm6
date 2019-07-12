@@ -299,6 +299,7 @@ has IO::Spec $.spec = $*SPEC;
 has $.grammar = BSD.new;
 has Globber $!globber;
 has Globber @!globbers;
+has Bool $!absolute = False;
 
 my sub simplify(@terms) {
     my Globber::Match $prev;
@@ -338,6 +339,10 @@ method !compile-glob() {
 
 method !compile-globs() {
     my @parts = $.pattern.split($.spec.dir-sep);
+
+    $!absolute = (@parts[0] eq '');
+    shift @parts if $!absolute;
+
     @!globbers = @parts.map({
         Globber.new(
             terms => simplify($!grammar.parse($^pattern)<term>.map({.made})),
@@ -374,6 +379,9 @@ method dir(Str() $path = '.') returns Seq:D {
 
     my $current = $path.IO;
     return []<> unless $current.d;
+
+    die "Using an absolute glob with a relative search origin is not permitted."
+        if $!absolute and !$current.is-absolute;
 
     my @globbers = @!globbers;
 
@@ -438,6 +446,19 @@ multi method ACCEPTS(Str:D(Any) $candidate) returns Bool:D {
 multi method ACCEPTS(IO::Path:D $path) returns Bool:D {
     self!compile-globs;
     my @parts = (~$path).split($.spec.dir-sep);
+
+    if $!absolute {
+        if @parts[0] eq '' {
+            shift @parts[0];
+        }
+        else {
+            return False;
+        }
+    }
+    elsif @parts[0] eq '' {
+        shift @parts[0];
+    }
+
     return False unless @parts.elems == @!globbers.elems;
     [&&] (@parts Z @!globbers).map: -> ($p, $g) { $p ~~ $g };
 }
