@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+    * Fix #15: Globbing absolute globs works, but only if you pair it with an
+      absolute dir path. Also fixes relative globs used on an absolute dir path.
+      Using an absolute glob with a relative dir is an exception. (HT: @0racle)
+
 v0.6	2018-11-11
 
     * Fix location of use v6 for v6.d. :(
