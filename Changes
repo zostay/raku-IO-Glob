@@ -1,4 +1,4 @@
-{{$NEXT}}
+v0.7.0	2019-07-12
 
     * Fix #15: Globbing absolute globs works, but only if you pair it with an
       absolute dir path. Also fixes relative globs used on an absolute dir path.
