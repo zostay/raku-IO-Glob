@@ -1,45 +1,45 @@
 {
+  "tags": [
+    
+  ],
   "perl": "6",
-  "authors": [
-    "Andrew Sterling Hanenkamp <hanenkamp@cpan.org>",
-    "Peter Pentchev <roam@ringlet.net>"
-  ],
-  "license": "Artistic-2.0",
-  "auth": "github:zostay",
-  "build-depends": [
-    
-  ],
-  "source-url": "git://github.com/zostay/perl6-IO-Glob.git",
-  "description": "Glob matching for paths & strings and listing files",
-  "support": {
-    "bugtracker": "https://github.com/zostay/perl6-IO-Glob/issues",
-    "source": "git://github.com/zostay/perl6-IO-Glob.git"
+  "provides": {
+    "IO::Glob::SQL": "lib/IO/Glob.pm6",
+    "IO::Glob::Simple": "lib/IO/Glob.pm6",
+    "IO::Glob::Globber::Match": "lib/IO/Glob.pm6",
+    "IO::Glob::Globber": "lib/IO/Glob.pm6",
+    "IO::Glob::BSD": "lib/IO/Glob.pm6",
+    "IO::Glob::Globber::Expansion": "lib/IO/Glob.pm6",
+    "IO::Glob::Globber::Term": "lib/IO/Glob.pm6",
+    "IO::Glob::Base": "lib/IO/Glob.pm6",
+    "IO::Glob": "lib/IO/Glob.pm6"
   },
-  "resources": [
-    
-  ],
-  "meta-version": "0",
-  "test-depends": [
-    
-  ],
   "depends": [
     "Test",
     "Test::META"
   ],
-  "version": "0.7.0",
-  "tags": [
+  "support": {
+    "bugtracker": "https://github.com/zostay/perl6-IO-Glob/issues",
+    "source": "git://github.com/zostay/perl6-IO-Glob.git"
+  },
+  "auth": "github:zostay",
+  "test-depends": [
     
   ],
+  "description": "Glob matching for paths & strings and listing files",
   "name": "IO::Glob",
-  "provides": {
-    "IO::Glob::BSD": "lib/IO/Glob.pm6",
-    "IO::Glob::Base": "lib/IO/Glob.pm6",
-    "IO::Glob::SQL": "lib/IO/Glob.pm6",
-    "IO::Glob::Simple": "lib/IO/Glob.pm6",
-    "IO::Glob::Globber::Term": "lib/IO/Glob.pm6",
-    "IO::Glob::Globber": "lib/IO/Glob.pm6",
-    "IO::Glob::Globber::Expansion": "lib/IO/Glob.pm6",
-    "IO::Glob::Globber::Match": "lib/IO/Glob.pm6",
-    "IO::Glob": "lib/IO/Glob.pm6"
-  }
+  "source-url": "git://github.com/zostay/perl6-IO-Glob.git",
+  "license": "Artistic-2.0",
+  "authors": [
+    "Andrew Sterling Hanenkamp <hanenkamp@cpan.org>",
+    "Peter Pentchev <roam@ringlet.net>"
+  ],
+  "version": "0.8.0",
+  "build-depends": [
+    
+  ],
+  "resources": [
+    
+  ],
+  "meta-version": "0"
 }
