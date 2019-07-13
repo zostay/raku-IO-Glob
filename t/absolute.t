@@ -4,7 +4,7 @@ use Test;
 use IO::Glob;
 
 my $volume = '.'.IO.volume;
-my $root-dir = '.'.IO.volume ~ $*SPEC.dir-sep;
+my $root-dir = $volume ~ $*SPEC.dir-sep;
 
 my @root = dir($root-dir).sort».Str;
 

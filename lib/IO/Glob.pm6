@@ -451,14 +451,14 @@ multi method ACCEPTS(IO::Path:D $path) returns Bool:D {
 
     if $!absolute {
         if @parts[0] eq $volume {
-            shift @parts[0];
+            shift @parts;
         }
         else {
             return False;
         }
     }
     elsif @parts[0] eq $volume {
-        shift @parts[0];
+        shift @parts;
     }
 
     return False unless @parts.elems == @!globbers.elems;
