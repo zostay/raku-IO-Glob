@@ -1,5 +1,11 @@
 {{$NEXT}}
 
+    * Fix #17: The new absolute file handling fixed in the previous version
+      worked fine for Unix-ish systems, but not systems that place volume names
+      in front of the root path (broke Windows at least).
+    * Fix #7: Tests have been revised to work on windows and the main repo is
+      now automatically tested against Windows using AppVeyor. (HT: @zoffixznet)
+
 v0.7.0	2019-07-12
 
     * Fix #15: Globbing absolute globs works, but only if you pair it with an
