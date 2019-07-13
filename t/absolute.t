@@ -3,8 +3,10 @@ use v6;
 use Test;
 use IO::Glob;
 
-my $volume = '.'.IO.volume;
-my $root-dir = $volume ~ $*SPEC.dir-sep;
+use lib 't/lib';
+use Test::Glob;
+
+my $root-dir = root-dir;
 
 my @root = dir($root-dir).sort».Str;
 
