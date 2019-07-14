@@ -1,7 +1,7 @@
 NAME
 ====
 
-IO::Glob - Glob matching for paths & strings and listing files
+IO::Glob - Glob matching for paths, strings and file listings.
 
 SYNOPSIS
 ========
@@ -38,13 +38,13 @@ SYNOPSIS
 DESCRIPTION
 ===========
 
-Traditionally, globs provide a handy shorthand for identifying the files you're interested in based upon their path. This class provides that shorthand using a BSD-style glob grammar that is familiar to Perl devs. However, it is more powerful than its Perl 5 predecessor.
+Traditionally, globs provide a handy shorthand for describing the files you're interested in based upon their path. This class provides that shorthand using a BSD-style glob grammar that is familiar to Perl devs. However, it is more powerful than its Perl 5 predecessor.
 
-  * Globs are built as IO::Glob objects which encapsulate the pattern. You may create them and pass them around.
+  * Globs are built as `IO::Glob` objects which encapsulate the pattern. You may create them and pass them around.
 
   * By using them as an iterator, you can put globs to their traditional use: listing all the files in a directory.
 
-  * Globs also work as smart-matches. It will match against strings or anything that stringifies and against [IO::Path](IO::Path)s too.
+  * Globs can also be smart-matched. It will match against strings or anything that stringifies; it will work against [IO::Path](IO::Path)s too.
 
   * Globbing can be done with different grammars. This class ships with three: simple, BSD, and SQL.
 
