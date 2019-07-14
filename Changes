@@ -1,4 +1,4 @@
-{{$NEXT}}
+v0.8.1	2019-07-13
 
     * Merged #14: Remove deprecated flatmap method call. (HT: @Leont)
     * Merged #11: Some improvements to documentation. (HT: @JJ)
