@@ -1,3 +1,5 @@
+{{$NEXT}}
+
 v0.9.0	2019-12-29
 
     * Merged #20: Handle multiple separators as a single separator.
