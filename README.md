@@ -32,7 +32,7 @@ SYNOPSIS
     for glob("src/core/%.pm", :sql) -> $file { ... }
 
     # Or want globbing without all the fancy bits?
-    # :simple turns off everything but * an ?
+    # :simple turns off everything but * and ?
     for glob("src/core/*.pm", :simple) -> $file { ... }
 
 DESCRIPTION
