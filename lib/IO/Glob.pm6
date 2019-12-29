@@ -340,7 +340,8 @@ method !compile-glob() {
 
 method !compile-globs() {
     ($!volume,) = $.spec.splitpath($.pattern, :nofile);
-    my @parts = $.pattern.split($.spec.dir-sep);
+    my $delim = $.spec.dir-sep;
+    my @parts = $.pattern.split(/ $delim + /);
 
     $!absolute = (@parts[0] eq $!volume);
     shift @parts if $!absolute;
