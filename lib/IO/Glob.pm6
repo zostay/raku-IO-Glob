@@ -93,7 +93,6 @@ class Globber {
     multi method ACCEPTS(Str:U $) returns Bool:D { False }
     multi method ACCEPTS(Str:D $candidate) returns Bool:D {
         self!compile-terms;
-	say "Candidate $candidate ", @!matchers;
         $candidate ~~ any(@!matchers);
     }
 
@@ -393,14 +392,13 @@ method dir(Str() $path = '.') returns Seq:D {
     my @open-list = \(:path($current), :@globbers, :origin);
     gather while @open-list {
         my (:$path, :@globbers, :$origin) := @open-list.shift;
-	say "Path $path ", $path.basename, " ", $path.basename ne '..' | '.', " G ", @globbers;
+	next unless $origin || $path.basename ne '..' | '.';
+
         if @globbers {
             my ($globber, @remaining) = @globbers;
 
             next unless $path ~~ :d;
-            next unless $origin || $path.basename ne '..' | '.';
 
-	    say "Passed $path";
             my @paths = do if $globber.is-ordered {
                 $globber.accepts-with-sort($path.dir);
             }

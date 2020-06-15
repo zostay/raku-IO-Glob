@@ -9,7 +9,6 @@ use Test::Glob;
 my $root-dir = root-dir;
 
 my @root = dir($root-dir).sort;
-say glob("$root-dir*").dir($root-dir);
 
 subtest 'root-in-the-glob-with-relative-dir-dies' => {
     throws-like {
@@ -31,7 +30,5 @@ subtest 'root-in-the-dir' => {
     my @files = glob("*").dir($root-dir).».Str.grep(none("$root-dir.", "$root-dir..")).sort;
     is-deeply @files, @root».Str;
 }
-
-
 
 done-testing;
