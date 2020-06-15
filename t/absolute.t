@@ -9,11 +9,17 @@ use Test::Glob;
 my $root-dir = root-dir;
 
 my @root = dir($root-dir).sort;
+say glob("$root-dir*").dir($root-dir);
 
 subtest 'root-in-the-glob-with-relative-dir-dies' => {
     throws-like {
         glob("$root-dir*").dir
     }, X::AdHoc, message => /'relative search origin'/;
+}
+
+subtest 'root-via-accept' => {
+    my @files = @root.grep(glob("$root-dir*"))».Str;
+    is-deeply @files, @root».Str;
 }
 
 subtest 'root-in-the-glob' => {
@@ -26,9 +32,6 @@ subtest 'root-in-the-dir' => {
     is-deeply @files, @root».Str;
 }
 
-subtest 'root-via-accept' => {
-    my @files = @root.grep(glob("$root-dir*"))».Str;
-    is-deeply @files, @root».Str;
-}
+
 
 done-testing;

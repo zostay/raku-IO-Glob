@@ -93,6 +93,7 @@ class Globber {
     multi method ACCEPTS(Str:U $) returns Bool:D { False }
     multi method ACCEPTS(Str:D $candidate) returns Bool:D {
         self!compile-terms;
+	say "Candidate $candidate ", @!matchers;
         $candidate ~~ any(@!matchers);
     }
 
@@ -302,7 +303,7 @@ has Globber @!globbers;
 has Bool $!absolute = False;
 has Str $!volume;
 
-my sub simplify(@terms) {
+my sub simplify(@terms) is export {
     my Globber::Match $prev;
     my @result = gather for @terms {
         when Globber::Match {
@@ -392,13 +393,14 @@ method dir(Str() $path = '.') returns Seq:D {
     my @open-list = \(:path($current), :@globbers, :origin);
     gather while @open-list {
         my (:$path, :@globbers, :$origin) := @open-list.shift;
-
+	say "Path $path ", $path.basename, " ", $path.basename ne '..' | '.', " G ", @globbers;
         if @globbers {
             my ($globber, @remaining) = @globbers;
 
             next unless $path ~~ :d;
             next unless $origin || $path.basename ne '..' | '.';
 
+	    say "Passed $path";
             my @paths = do if $globber.is-ordered {
                 $globber.accepts-with-sort($path.dir);
             }
