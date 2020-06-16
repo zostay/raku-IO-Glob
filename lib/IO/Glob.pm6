@@ -302,7 +302,7 @@ has Globber @!globbers;
 has Bool $!absolute = False;
 has Str $!volume;
 
-my sub simplify(@terms) is export {
+my sub simplify(@terms) is export(:TESTING) {
     my Globber::Match $prev;
     my @result = gather for @terms {
         when Globber::Match {
@@ -392,12 +392,12 @@ method dir(Str() $path = '.') returns Seq:D {
     my @open-list = \(:path($current), :@globbers, :origin);
     gather while @open-list {
         my (:$path, :@globbers, :$origin) := @open-list.shift;
-	next unless $origin || $path.basename ne '..' | '.';
 
         if @globbers {
             my ($globber, @remaining) = @globbers;
 
             next unless $path ~~ :d;
+	    next unless $origin || $path.basename ne '..' | '.';
 
             my @paths = do if $globber.is-ordered {
                 $globber.accepts-with-sort($path.dir);

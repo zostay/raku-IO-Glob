@@ -1,5 +1,5 @@
 use Test;
-use IO::Glob;
+use IO::Glob :TESTING;
 
 use lib 't/lib';
 use Test::Glob;
