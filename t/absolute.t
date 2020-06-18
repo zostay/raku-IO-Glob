@@ -17,11 +17,11 @@ subtest 'root-in-the-glob-with-relative-dir-dies' => {
 }
 
 subtest 'root-via-accept' => {
-    say glob("$root-dir*").raku;
     my @files = @root.grep(glob("$root-dir*"))».Str;
     is-deeply @files, @root».Str;
 }
 
+@root.prepend(".","..");
 subtest 'root-in-the-glob' => {
     my @files = glob("$root-dir*").dir($root-dir)».Str.grep(none("$root-dir.", "$root-dir..")).sort;
     is-deeply @files, @root».Str;
