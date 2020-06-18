@@ -7,6 +7,7 @@ use lib 't/lib';
 use Test::Glob;
 
 my $root-dir = root-dir;
+say $root-dir;
 
 my @root = dir($root-dir).sort;
 
@@ -21,7 +22,6 @@ subtest 'root-via-accept' => {
     is-deeply @files, @root».Str;
 }
 
-@root.prepend(".","..");
 subtest 'root-in-the-glob' => {
     my @files = glob("$root-dir*").dir($root-dir)».Str.grep(none("$root-dir.", "$root-dir..")).sort;
     is-deeply @files, @root».Str;
