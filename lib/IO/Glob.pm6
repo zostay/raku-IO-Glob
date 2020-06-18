@@ -302,7 +302,7 @@ has Globber @!globbers;
 has Bool $!absolute = False;
 has Str $!volume;
 
-my sub simplify(@terms) {
+my sub simplify(@terms) is export(:TESTING) {
     my Globber::Match $prev;
     my @result = gather for @terms {
         when Globber::Match {
@@ -387,12 +387,10 @@ method dir(Str() $path = '.') returns Seq:D {
         if $!absolute and !$current.is-absolute;
 
     my @globbers = @!globbers;
-
     # Depth-first-search... commence!
     my @open-list = \(:path($current), :@globbers, :origin);
     gather while @open-list {
         my (:$path, :@globbers, :$origin) := @open-list.shift;
-
         if @globbers {
             my ($globber, @remaining) = @globbers;
 
@@ -446,18 +444,18 @@ multi method ACCEPTS(Str:D(Any) $candidate) returns Bool:D {
     self!compile-glob;
     $candidate ~~ $!globber
 }
+
 multi method ACCEPTS(IO::Path:D $path) returns Bool:D {
     self!compile-globs;
     my ($volume,) = $.spec.splitpath($path, :nofile);
     my @parts = (~$path).split($.spec.dir-sep);
-
     if $!absolute {
         if @parts[0] eq $volume eq $!volume {
             shift @parts;
         }
-        else {
-            return False;
-        }
+#        else {
+#            return False;
+#        }
     }
     elsif @parts[0] eq $volume {
         shift @parts;
