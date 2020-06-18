@@ -16,3 +16,5 @@ for <__. _% > {
     ok($parsed<term>, "Parsed term $_ is OK" );
     ok simplify( $parsed<term>.map: *.made ), "Can simplify";
 }
+
+done-testing;
