@@ -397,7 +397,7 @@ method dir(Str() $path = '.') returns Seq:D {
             my ($globber, @remaining) = @globbers;
 
             next unless $path ~~ :d;
-	    next unless $origin || $path.basename ne '..' | '.';
+	        next unless $origin || $path.basename ne '..' | '.';
 
             my @paths = do if $globber.is-ordered {
                 $globber.accepts-with-sort($path.dir);
@@ -444,20 +444,21 @@ The reason is that the second and third are matched in parts as follows:
 multi method ACCEPTS(Mu:U $) returns Bool:D { False }
 multi method ACCEPTS(Str:D(Any) $candidate) returns Bool:D {
     self!compile-glob;
+    say "Candidate $candidate";
     $candidate ~~ $!globber
 }
+
 multi method ACCEPTS(IO::Path:D $path) returns Bool:D {
     self!compile-globs;
     my ($volume,) = $.spec.splitpath($path, :nofile);
     my @parts = (~$path).split($.spec.dir-sep);
-
     if $!absolute {
         if @parts[0] eq $volume eq $!volume {
             shift @parts;
         }
-        else {
-            return False;
-        }
+#        else {
+#            return False;
+#        }
     }
     elsif @parts[0] eq $volume {
         shift @parts;

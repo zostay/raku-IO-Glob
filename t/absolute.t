@@ -17,6 +17,7 @@ subtest 'root-in-the-glob-with-relative-dir-dies' => {
 }
 
 subtest 'root-via-accept' => {
+    say glob("$root-dir*").raku;
     my @files = @root.grep(glob("$root-dir*"))».Str;
     is-deeply @files, @root».Str;
 }
