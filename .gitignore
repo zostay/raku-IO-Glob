@@ -1,3 +1,6 @@
 .precomp
 
 IO-Glob-*.tar.gz
+
+# Emacs backup
+*~
