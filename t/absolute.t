@@ -7,7 +7,6 @@ use lib 't/lib';
 use Test::Glob;
 
 my $root-dir = root-dir;
-say $root-dir;
 
 my @root = dir($root-dir).sort;
 
